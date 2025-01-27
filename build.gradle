@@ -1,80 +1,31 @@
-apply plugin: 'war'
- 
-version = rootProject.ext.collectionApiVersion
- 
-ext{
- warName = project.name+'-'+version+'-boot.war'
- set('springCloudVersion', "2021.0.3")
- }
- 
- 
-bootWar {
-    classifier = 'boot'
+plugins {
+    id 'groovy'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
 }
  
- 
-task buildCollectionApiWar doLast {
- 
-    println 'Creating Exploded war...'+warName
-    ant.unzip(src: "$buildDir/libs/"+warName, dest: "$buildDir/libs/"+rootProject.ext.collectionApiWar)
-}
- 
-task copyCollectionApiWar doLast {
- 
-    println "deleting "+rootProject.ext.DEPLOY_DIR+"/"+rootProject.ext.collectionApiWar
-    delete rootProject.ext.DEPLOY_DIR+"/"+rootProject.ext.collectionApiWar
-   
-    println 'Copying collection-api.war to server'
-    def explodePath =  'build/libs/'+rootProject.ext.collectionApiWar
-   
-    copy {
-        from explodePath
-        into rootProject.ext.DEPLOY_DIR+"/"+rootProject.ext.collectionApiWar
-    }  
-         
-}
- 
-task copyToDockerDeployDirectory doLast {
- 
-   
-    println 'Copying collection-api.war to docker directory'
-    def jarPath =  'build/libs/'+warName
-   
-    copy {
-        from jarPath,'Dockerfile','Dockerfile.secure'
-        into rootProject.ext.DOCKER_DIR+"/collection-api-v1/"
-    }  
-         
-}
- 
-copyCollectionApiWar.dependsOn(buildCollectionApiWar)
-build.dependsOn(copyCollectionApiWar)
-build.dependsOn(copyToDockerDeployDirectory)
- 
-dependencies{
- 
-   implementation project(':eka-api-common')
-   // https://mvnrepository.com/artifact/org.json/json
-   implementation group: 'org.json', name: 'json', version: '20220924'
-   implementation group: 'com.google.code.gson', name: 'gson', version: '2.10'
- 
-   implementation 'org.mapstruct:mapstruct:1.5.3.Final'
- 
-   implementation 'org.mapstruct:mapstruct-processor:1.5.3.Final'
-   implementation group: 'com.github.darrachequesne', name: 'spring-data-jpa-datatables', version: '5.2.0'
-   implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-   
-   implementation 'io.reactivex:rxjava:1.3.8'
-   implementation 'io.reactivex:rxjava-reactive-streams:1.2.1'
-
-
-   // added test patterns
-   implementation 'org.apache.logging.log4j:log4j-core:2.+'
-   implementation 'org.apache.commons:commons-csv:[1.5, 1.8)'
-	
-}
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+repositories {
+    jcenter()
+    flatDir {
+        dirs 'lib'
     }
+}
+ 
+archivesBaseName = 'gradle-example'
+ 
+dependencies {
+    implementation 'org.codehaus.groovy:groovy:3.+'
+ 
+    // Groovy module dependency
+    implementation 'org.codehaus.groovy:groovy-json:3.+'
+ 
+    // Strictly exact version of Maven dependency
+    implementation 'com.codevineyard:hello-world:1.0.1!!'
+ 
+    // Dependency from local jar
+    implementation ':simple-jar'
+}
+ 
+application {
+    mainClassName = 'com.adjectivecolournoun.gradle.Greetz'
 }
