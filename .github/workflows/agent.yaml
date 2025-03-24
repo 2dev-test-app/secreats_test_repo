@@ -42,6 +42,5 @@ jobs:
           -e GITHUB_SHA="${{github.sha}}" \
           -e WORKSPACE_PATH="/src" \
           -e LOG_LEVEL="debug" \
-          -e RA="true" \
           -v "${{ github.workspace }}":/src  \
           --entrypoint /bin/sh "${{env.docker_tag}}" -c "duckdefender code --all"
