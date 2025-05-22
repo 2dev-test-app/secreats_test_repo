@@ -9,6 +9,7 @@ r = requests.get(url, headers=headers, verify=True) # set verify to False if ssl
 #print (r.json())
 #y=json.loads(r.json())
 
+
 test_txt = r.json()
 count_high = 0
  
