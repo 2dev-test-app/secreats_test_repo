@@ -17,7 +17,6 @@ for i in range(len(test_txt['results'])):
     if (test_txt['results'][i]['found_by']) == [19]:
  
         if (test_txt['results'][i]['severity'])== 'High':
- 
             count_high+=1
  
         elif (test_txt['results'][i]['severity'])== 'Medium':
