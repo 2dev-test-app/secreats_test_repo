@@ -8,7 +8,9 @@ headers = {'content-type': 'application/json',
 r = requests.get(url, headers=headers, verify=True) # set verify to False if ssl cert is self-signed
 #print (r.json())
 #y=json.loads(r.json())
- 
+
+
+
 test_txt = r.json()
 count_high = 0
  
