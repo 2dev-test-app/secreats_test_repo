@@ -48,6 +48,3 @@ elif count_medium >2:
     print("more than 2  high severity found so terminated pipeline")
     exit(1)
 
-else:
-   r = requests.get(url, headers=headers, verify=True) # set verify to False if ssl cert is self-signed
-
